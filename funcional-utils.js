@@ -1,39 +1,38 @@
-const obtenerIngresos = valores => valores.filter(valor => valor > 0);
+const obtenerIngresos = movimientos => movimientos.filter(movimiento => movimiento.tipo=== "ingreso");
 
-const obtenerGastos = valores => valores.filter(valor => valor < 0);
+const obtenerGastos = movimientos =>
+  movimientos.filter(movimiento => movimiento.tipo === 'gasto');
 
-const montosAbsolutos = valores => valores.map(valor => Math.abs(valor));
-
-const buscarPrimerGastoMayor = (valores, monto) => valores.find(valor => valor < -monto);
-
-const calcularSaldo = valores =>
-  valores.reduce((acumulador, valor) => acumulador + valor, 0);
-
-const totalIngresos = valores =>
-  obtenerIngresos(valores).reduce((acumulador, valor) => acumulador + valor, 0);
-
-const totalGastos = valores =>
-  obtenerGastos(valores).reduce((acumulador, valor) => acumulador + valor, 0);
+const buscarPrimerGastoMayor = (movimientos, monto) =>
+  obtenerGastos(movimientos).find(movimiento => movimiento.valor > monto);
 
 
-const generarValoresReporte = valores => [
-  valores.length,
-  totalIngresos(valores),
-  totalGastos(valores),
-  calcularSaldo(valores)
+const totalIngresos = movimientos =>
+  obtenerIngresos(movimientos).reduce((acumulador, movimiento) => acumulador + movimiento.valor, 0);
+
+const totalGastos = movimientos =>
+  obtenerGastos(movimientos).reduce((acumulador, movimiento) => acumulador + movimiento.valor, 0);
+
+const calcularSaldo = movimientos =>
+  totalIngresos(movimientos) - totalGastos(movimientos);
+
+const generarValoresReporte = movimientos => [
+  movimientos.length,
+  totalIngresos(movimientos),
+  totalGastos(movimientos),
+  calcularSaldo(movimientos)
 ];
 
-const imprimirReporte = (nombres, valores) => {
+const imprimirReporte = movimientos => {
   console.log('--- Resumen Final ---');
-  
-  valores.forEach((valor, indice) => {
-    const tipo = valor > 0 ? 'ingreso' : 'gasto';
-    console.log(`  ${indice + 1}. ${nombres[indice]} (${tipo}): $${Math.abs(valor).toFixed(2)}`)
-     });
 
-  const reporte = generarValoresReporte(valores);
+  movimientos.forEach((movimiento, indice) => {
+    console.log(`  ${indice + 1}. ${movimiento.nombre} (${movimiento.tipo}): $${movimiento.valor.toFixed(2)}`);
+  });
+
+  const reporte = generarValoresReporte(movimientos);
   console.log('Total movimientos:', reporte[0]);
   console.log('Total ingresos: $' + reporte[1].toFixed(2));
-  console.log('Total gastos: $' + Math.abs(reporte[2]).toFixed(2));
+  console.log('Total gastos: $' + reporte[2].toFixed(2));   // ya es positivo: sin Math.abs
   console.log('Saldo: $' + reporte[3].toFixed(2));
 };
