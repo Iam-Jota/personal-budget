@@ -47,9 +47,7 @@ function render() {
   lista.innerHTML = presupuesto.movimientos.map(liHTML).join('');
 
   // 2. RENDERIZADO DEL SALDO
-  // Selecciona el elemento HTML con el id 'saldo' y cambia su texto.
-  // Llama al método .saldo() para calcular el total, usa .toFixed(2) para forzar 2 decimales,
-  // y le concatena el símbolo del dólar al principio.
+  // Selecciokkkkk
   document.getElementById('saldo').textContent = '$' + presupuesto.saldo().toFixed(2);
 
 document.getElementById('total-ingresos').textContent = '$' + presupuesto.totalIngresos().toFixed(2);
