@@ -68,4 +68,4 @@ form.addEventListener('submit', function (e) {
   e.target.reset();
 });
 
-render();   // pinta los ejemplos al cargar
+render();   // pinta los ejemplos al cargar y marca el final
